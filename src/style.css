@@ -1,0 +1,314 @@
+:root {
+  --ink: #070703;
+  --paper: #f2edc8;
+  --gold: #f2e83f;
+  --gold-soft: #f7ef97;
+  color-scheme: dark;
+  font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+  background: var(--ink);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(77, 73, 18, 0.12), transparent 48%),
+    var(--ink);
+  color: var(--paper);
+}
+
+button,
+canvas {
+  -webkit-tap-highlight-color: transparent;
+}
+
+#game-shell {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--ink);
+}
+
+#game {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#game canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  touch-action: none;
+  box-shadow: 0 0 120px rgba(0, 0, 0, 0.65);
+}
+
+.frame {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  border: 1px solid rgba(246, 237, 153, 0.1);
+  box-shadow:
+    inset 0 0 90px rgba(0, 0, 0, 0.55),
+    inset 0 0 18px rgba(0, 0, 0, 0.3);
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 68% 34%, rgba(244, 233, 64, 0.12), transparent 31%),
+    radial-gradient(circle at 40% 85%, rgba(244, 233, 64, 0.05), transparent 34%),
+    #070703;
+  transition:
+    opacity 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 650ms;
+}
+
+.loading::before,
+.loading::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+}
+
+.loading::before {
+  width: min(70vw, 850px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(244, 233, 64, 0.1);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 80px rgba(244, 233, 64, 0.018),
+    0 0 0 160px rgba(244, 233, 64, 0.012);
+}
+
+.loading::after {
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 35%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.game-ready .loading {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.loading__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: min(86vw, 760px);
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: clamp(0px, 5vw, 64px);
+}
+
+.loading__kicker {
+  margin: 0 0 26px;
+  color: rgba(247, 239, 151, 0.63);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+.loading__title {
+  margin: 0;
+  color: #f4efcf;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: clamp(4.5rem, 11vw, 9.5rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.76;
+  text-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+}
+
+.loading__rule {
+  width: 56px;
+  height: 2px;
+  margin: 42px 0 22px;
+  background: var(--gold);
+  box-shadow: 0 0 24px rgba(242, 232, 63, 0.35);
+}
+
+.loading__copy {
+  margin: 0;
+  color: rgba(242, 237, 200, 0.52);
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  font-style: italic;
+}
+
+.loading__status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 54px;
+  color: rgba(242, 237, 200, 0.35);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.loading__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 14px rgba(242, 232, 63, 0.95);
+  animation: loading-pulse 1.6s ease-in-out infinite;
+}
+
+.rotate-hint {
+  display: none;
+}
+
+.rotate-hint__device {
+  position: relative;
+  width: 46px;
+  height: 74px;
+  border: 1.5px solid rgba(242, 232, 63, 0.68);
+  border-radius: 8px;
+  transform: rotate(0deg);
+  animation: rotate-nudge 2.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.rotate-hint__screen {
+  position: absolute;
+  inset: 7px 5px 12px;
+  border-radius: 2px;
+  background: rgba(242, 232, 63, 0.1);
+}
+
+.rotate-hint__home {
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border: 1px solid rgba(242, 232, 63, 0.55);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.rotate-hint__title {
+  margin: 30px 0 10px;
+  color: var(--paper);
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: clamp(1.8rem, 8vw, 2.4rem);
+  letter-spacing: -0.035em;
+}
+
+.rotate-hint__copy {
+  max-width: 270px;
+  margin: 0;
+  color: rgba(242, 237, 200, 0.5);
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: 0.92rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.noscript {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 2rem;
+  background: var(--ink);
+  color: var(--paper);
+  text-align: center;
+}
+
+@keyframes loading-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.75);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes rotate-nudge {
+  0%,
+  30%,
+  100% {
+    transform: rotate(0deg);
+  }
+  52%,
+  72% {
+    transform: rotate(90deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .loading__inner {
+    width: 82vw;
+    padding-left: 0;
+  }
+
+  .loading__title {
+    font-size: clamp(4rem, 20vw, 6.5rem);
+  }
+
+  .loading__rule {
+    margin-top: 32px;
+  }
+
+  .frame {
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@media (orientation: portrait) and (pointer: coarse) {
+  .rotate-hint {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background:
+      radial-gradient(circle at 50% 44%, rgba(242, 232, 63, 0.08), transparent 35%),
+      rgba(7, 7, 3, 0.97);
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading {
+    transition-duration: 1ms;
+  }
+
+  .loading__dot,
+  .rotate-hint__device {
+    animation: none;
+  }
+}

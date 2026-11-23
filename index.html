@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#070703" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta
+      name="description"
+      content="The Yellow City — a hand-drawn side-scrolling movement study made with Phaser."
+    />
+    <title>The Yellow City — a Phaser movement study</title>
+  </head>
+  <body>
+    <main id="game-shell" aria-label="The Yellow City game">
+      <div id="game" role="application" aria-label="Side-scrolling platform game"></div>
+
+      <div id="loading" class="loading" aria-live="polite">
+        <div class="loading__inner">
+          <p class="loading__kicker">An ink &amp; momentum study</p>
+          <h1 class="loading__title">The Yellow<br />City</h1>
+          <div class="loading__rule" aria-hidden="true"></div>
+          <p class="loading__copy">Find the sparks. Wake the gate.</p>
+          <div class="loading__status">
+            <span class="loading__dot" aria-hidden="true"></span>
+            Preparing the streets
+          </div>
+        </div>
+      </div>
+
+      <div class="frame" aria-hidden="true"></div>
+
+      <div class="rotate-hint" aria-hidden="true">
+        <div class="rotate-hint__device">
+          <span class="rotate-hint__screen"></span>
+          <span class="rotate-hint__home"></span>
+        </div>
+        <p class="rotate-hint__title">Turn the city sideways.</p>
+        <p class="rotate-hint__copy">This story is painted in landscape. Rotate your device to play.</p>
+      </div>
+    </main>
+    <noscript>
+      <p class="noscript">This game needs JavaScript. Please enable it, then reload the page.</p>
+    </noscript>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
